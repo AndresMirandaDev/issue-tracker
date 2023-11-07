@@ -1,22 +1,28 @@
 'use client';
-import React, { useState } from 'react'
-import { Button, Callout, TextField } from '@radix-ui/themes'
-import SimpleMDE from "react-simplemde-editor";
-import { useForm, Controller } from 'react-hook-form'
 import "easymde/dist/easymde.min.css";
+import React, { useState } from 'react'
+import SimpleMDE from "react-simplemde-editor";
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
-import {MdDangerous} from 'react-icons/md'
 
-interface IssueForm {
-  title:string,
-  description:string
-}
+import {MdDangerous} from 'react-icons/md'
+import { Button, Callout, Text, TextField } from '@radix-ui/themes'
+import { useForm, Controller } from 'react-hook-form'
+import { useRouter } from 'next/navigation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { TypeOf, z } from 'zod'
+
+import { createIssueSchema } from '@/app/validationSchema';
+
+type IssueForm = z.infer<typeof createIssueSchema>;//zod is infering the type of the schema, so theres no need to make an interface and have duplicated code
 
 const NewIssuePage = () => {
-  const {register, handleSubmit, control} = useForm<IssueForm>()
+  const {register, handleSubmit, control, formState:{ errors }} = useForm<IssueForm>({
+    resolver:zodResolver(createIssueSchema)
+  })
   const router = useRouter()
   const [error, setError]= useState('')
+
+
   return (
     <div className='max-w-xl'>
       {error && <Callout.Root color='red' className='mb-5'>
@@ -41,12 +47,13 @@ const NewIssuePage = () => {
           <TextField.Root>
               <TextField.Input placeholder='Title' {...register('title')}/>
           </TextField.Root>
+          {errors.title && <Text color='red' as='p'>{errors.title.message}</Text>}
           <Controller 
           control={control}
           name='description'
           render={({field})=> <SimpleMDE {...field}/>}
           />
-          
+          {errors.description && <Text as='p' color='red'>{errors.description.message}</Text>}  
           <Button>Submit New Issue</Button>
       </form>
     </div>
