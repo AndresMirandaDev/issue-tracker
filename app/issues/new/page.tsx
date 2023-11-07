@@ -12,6 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { TypeOf, z } from 'zod'
 
 import { createIssueSchema } from '@/app/validationSchema';
+import ErrorMessage from "@/app/components/ErrorMessage";
 
 type IssueForm = z.infer<typeof createIssueSchema>;//zod is infering the type of the schema, so theres no need to make an interface and have duplicated code
 
@@ -47,13 +48,17 @@ const NewIssuePage = () => {
           <TextField.Root>
               <TextField.Input placeholder='Title' {...register('title')}/>
           </TextField.Root>
-          {errors.title && <Text color='red' as='p'>{errors.title.message}</Text>}
+         <ErrorMessage>
+            {errors.title?.message}
+         </ErrorMessage>
           <Controller 
           control={control}
           name='description'
           render={({field})=> <SimpleMDE {...field}/>}
           />
-          {errors.description && <Text as='p' color='red'>{errors.description.message}</Text>}  
+          <ErrorMessage>
+            {errors.description?.message}
+          </ErrorMessage>
           <Button>Submit New Issue</Button>
       </form>
     </div>
