@@ -21,6 +21,5 @@ export async function POST(request: NextRequest) {
        }
     })
 
-    console.log(newIssue)
     return NextResponse.json(newIssue, { status: 201 })
 }
