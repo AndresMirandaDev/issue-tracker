@@ -13,7 +13,7 @@ import { z } from 'zod';
 
 import ErrorMessage from '@/app/components/ErrorMessage';
 import Spinner from '@/app/components/Spinner';
-import { createIssueSchema } from '@/app/validationSchema';
+import { IssueSchema } from '@/app/validationSchema';
 import { Issue } from '@prisma/client';
 
 interface Props {
@@ -24,7 +24,7 @@ const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {
   ssr: false,
 });
 
-type IssueFormData = z.infer<typeof createIssueSchema>; //zod is infering the type of the schema, so theres no need to make an interface and have duplicated code
+type IssueFormData = z.infer<typeof IssueSchema>; //zod is infering the type of the schema, so theres no need to make an interface and have duplicated code
 
 const IssueForm = ({ issue }: Props) => {
   const {
@@ -33,7 +33,7 @@ const IssueForm = ({ issue }: Props) => {
     control,
     formState: { errors },
   } = useForm<IssueFormData>({
-    resolver: zodResolver(createIssueSchema),
+    resolver: zodResolver(IssueSchema),
   });
   const router = useRouter();
   const [error, setError] = useState('');
