@@ -14,6 +14,7 @@ import {
   Text,
 } from '@radix-ui/themes';
 import { Spinner } from './components';
+import Skeleton from '@/app/components/Skeleton';
 
 const NavBar = () => {
   return (
@@ -63,7 +64,7 @@ const NavLinks = () => {
 const AuthStatus = () => {
   const { status, data: session } = useSession();
 
-  if (status === 'loading') return <Spinner />;
+  if (status === 'loading') return <Skeleton width="3rem" />;
 
   if (status === 'unauthenticated')
     return (
