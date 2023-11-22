@@ -12,6 +12,15 @@ const DeleteIssueButton = ({ issueId }: Props) => {
   const router = useRouter();
   const [error, setError] = useState(false);
 
+  const deleteIssue = async () => {
+    try {
+      await axios.delete('/api/issues/' + issueId);
+      router.push('/issues');
+      router.refresh();
+    } catch (error) {
+      setError(true);
+    }
+  };
   return (
     <>
       <AlertDialog.Root>
@@ -31,19 +40,7 @@ const DeleteIssueButton = ({ issueId }: Props) => {
               </Button>
             </AlertDialog.Cancel>
             <AlertDialog.Action>
-              <Button
-                color="red"
-                onClick={async () => {
-                  try {
-                    throw new Error();
-                    await axios.delete('/api/issues/' + issueId);
-                    router.push('/issues');
-                    router.refresh();
-                  } catch (error) {
-                    setError(true);
-                  }
-                }}
-              >
+              <Button color="red" onClick={deleteIssue}>
                 Delete Issue
               </Button>
             </AlertDialog.Action>
