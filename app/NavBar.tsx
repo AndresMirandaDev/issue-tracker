@@ -5,7 +5,7 @@ import { GiLongAntennaeBug } from 'react-icons/gi';
 import { usePathname } from 'next/navigation';
 import classNames from 'classnames';
 import { useSession } from 'next-auth/react';
-import { Box } from '@radix-ui/themes';
+import { Box, Container, Flex } from '@radix-ui/themes';
 import { Spinner } from './components';
 
 const NavBar = () => {
@@ -18,35 +18,41 @@ const NavBar = () => {
   ];
 
   return (
-    <nav className="flex border-b space-x-6 mb-5 px-5 h-14 items-center">
-      <Link href="/">
-        <GiLongAntennaeBug className="text-5xl text-cyan-600" />
-      </Link>
-      <ul className="flex space-x-6">
-        {links.map((link) => (
-          <li key={link.hfref}>
-            <Link
-              className={classNames({
-                'text-zinc-900': link.hfref === currentPath,
-                'text-zinc-500': link.hfref !== currentPath,
-                'hover:text-zinc-800 transition-colors': true,
-              })}
-              href={link.hfref}
-            >
-              {link.label}
+    <nav className="border-b mb-5 px-5 py-3">
+      <Container>
+        <Flex justify="between">
+          <Flex align="center" gap="3">
+            <Link href="/">
+              <GiLongAntennaeBug className="text-2xl text-cyan-600" />
             </Link>
-          </li>
-        ))}
-      </ul>
-      <Box>
-        {status === 'authenticated' && (
-          <Link href={'/api/auth/signout'}>Log out</Link>
-        )}
-        {status === 'unauthenticated' && (
-          <Link href={'/api/auth/signin'}>Log in</Link>
-        )}
-        {status === 'loading' && <Spinner />}
-      </Box>
+            <ul className="flex space-x-6">
+              {links.map((link) => (
+                <li key={link.hfref}>
+                  <Link
+                    className={classNames({
+                      'text-zinc-900': link.hfref === currentPath,
+                      'text-zinc-500': link.hfref !== currentPath,
+                      'hover:text-zinc-800 transition-colors': true,
+                    })}
+                    href={link.hfref}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </Flex>
+          <Box>
+            {status === 'authenticated' && (
+              <Link href={'/api/auth/signout'}>Log out</Link>
+            )}
+            {status === 'unauthenticated' && (
+              <Link href={'/api/auth/signin'}>Log in</Link>
+            )}
+            {status === 'loading' && <Spinner />}
+          </Box>
+        </Flex>
+      </Container>
     </nav>
   );
 };
