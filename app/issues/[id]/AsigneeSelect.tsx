@@ -31,7 +31,6 @@ const AsigneeSelect = () => {
       <Select.Content>
         <Select.Group>
           <Select.Label>Suggestions</Select.Label>
-
           {users?.map((user) => (
             <Select.Item key={user.id} value={user.id}>
               {user.name}
