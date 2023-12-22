@@ -47,22 +47,27 @@ const IssuesPage = async ({ searchParams }: Props) => {
       <IssueActions />
       <Table.Root variant="surface">
         <Table.Header>
-          {columns.map((column) => {
-            return (
-              <Table.ColumnHeaderCell key={column.value}>
-                <NextLink
-                  href={{
-                    query: { ...searchParams, orderBy: column.value },
-                  }}
+          <Table.Row>
+            {columns.map((column) => {
+              return (
+                <Table.ColumnHeaderCell
+                  key={column.value}
+                  className={column.className}
                 >
-                  {column.label}
-                </NextLink>
-                {column.value === searchParams.orderBy && (
-                  <ArrowUpIcon className="inline" />
-                )}
-              </Table.ColumnHeaderCell>
-            );
-          })}
+                  <NextLink
+                    href={{
+                      query: { ...searchParams, orderBy: column.value },
+                    }}
+                  >
+                    {column.label}
+                  </NextLink>
+                  {column.value === searchParams.orderBy && (
+                    <ArrowUpIcon className="inline" />
+                  )}
+                </Table.ColumnHeaderCell>
+              );
+            })}
+          </Table.Row>
         </Table.Header>
         <Table.Body>
           {issues.map((issue) => (
